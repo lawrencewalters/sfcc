@@ -60,7 +60,5 @@ Create an inventory file when you don't know the variants (inventory.xslt)
 
 Questions / follow up
 --------------
-https://bitbucket.org/lwalters/colony-brands/src/master/xml/
-
 
 provide sample XML to go with transforms, especially

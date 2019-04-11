@@ -4,7 +4,7 @@
     <xsl:output method="html" indent="no"/>
 
 <xsl:template match="dw:metadata">
-<xsl:text>|ID|Name|Description|Type|Default|Object|Group|
+<xsl:text>|ID|Name|Description|Type|Default|Localizable/Site Specific|Object|Group|
 </xsl:text>
 <xsl:apply-templates/>
 </xsl:template>
@@ -19,6 +19,16 @@
 </xsl:choose>|<xsl:value-of select="dw:type"/>|<xsl:choose>
   <xsl:when test="dw:default-value"> 
     <xsl:value-of select="dw:default-value"/>
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:text>-</xsl:text>
+  </xsl:otherwise>
+</xsl:choose>|<xsl:choose>
+  <xsl:when test="dw:localizable-flag = 'true'"> 
+    <xsl:text>Localizable</xsl:text>
+  </xsl:when>
+  <xsl:when test="dw:site-specific-flag = 'true'"> 
+    <xsl:text>Site Specific</xsl:text>
   </xsl:when>
   <xsl:otherwise>
     <xsl:text>-</xsl:text>

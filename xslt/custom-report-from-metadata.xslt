@@ -5,8 +5,10 @@
 
 
 <xsl:template match="dw:custom-type">
-<xsl:value-of select="concat(@type-id,'&#10;&#10;')"/>
+<xsl:value-of select="concat('&#10;', dw:display-name,'&#10;------&#10;')"/>
+<xsl:value-of select="concat('|ID|', @type-id,'|&#10;')"/>
 <xsl:value-of select="concat('|Key|',dw:key-definition/[@attribute-id], '|&#10;')"/>
+<xsl:value-of select="concat('|Description|', dw:description,'|&#10;')"/>
 <xsl:text>|Data Replication|</xsl:text>
 <xsl:choose>
   <xsl:when test="dw:staging-mode = 'no-staging'"> 
@@ -16,8 +18,8 @@
     <xsl:text>Yes</xsl:text>
   </xsl:otherwise>
 </xsl:choose><xsl:text>|&#10;</xsl:text>
-<xsl:value-of select="concat('|Scope|',dw:storage-scope, '|&#10;&#10;')"/>
-
+<xsl:value-of select="concat('|Scope|',dw:storage-scope, '|&#10;')"/><xsl:text></xsl:text>
+<xsl:value-of select="concat('|Retention|',dw:retention-days, '|&#10;&#10;')"/> 
 <xsl:text>|ID|Name|Description|Type|Default|Group|
 </xsl:text>
 <xsl:apply-templates/>

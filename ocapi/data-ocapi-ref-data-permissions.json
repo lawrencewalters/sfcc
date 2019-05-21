@@ -1,0 +1,47 @@
+{
+	"_v": "19.5",
+	"clients": [{
+		"client_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		"response_headers": {
+			"x-foo": "bar",
+			"P3P": "CP=\"NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM\""
+		},
+		"resources": [{
+				"resource_id": "/category_search/**",
+				"methods": ["post"],
+				"read_attributes": "(**)",
+				"write_attributes": "(**)",
+				"version_range": {
+					"from": "19.5"
+				}
+			},
+			{
+				"resource_id": "/customer_lists/**",
+				"methods": ["post"],
+				"read_attributes": "(**)",
+				"write_attributes": "(**)",
+				"version_range": {
+					"from": "19.5"
+				}
+			},
+			{
+				"resource_id": "/site_search",
+				"methods": ["post"],
+				"read_attributes": "(**)",
+				"write_attributes": "(**)",
+				"version_range": {
+					"from": "19.5"
+				}
+			},
+			{
+				"resource_id": "/sites",
+				"methods": ["get"],
+				"read_attributes": "(**)",
+				"write_attributes": "(**)",
+				"version_range": {
+					"from": "19.5"
+				}
+			}
+		]
+	}]
+}

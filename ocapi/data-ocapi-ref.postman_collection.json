@@ -1,0 +1,360 @@
+{
+	"info": {
+		"_postman_id": "0294c272-d5d3-46de-a57d-ef1e52f49462",
+		"name": "Data OCAPI Ref",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "oauth BM user grant",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "19af4fe3-7cb8-4765-9a6d-d97404818b7e",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setGlobalVariable(\"access_token\", jsonData.access_token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{bm_password}}:{{client_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{bm_user}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic  bWFkbW9iaWxlOk1AZE0wYiFsMzpNYWRNMGJpbGUhJA==",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "urn:demandware:params:oauth:grant-type:client-id:dwsid:dwsecuretoken",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{host}}/dw/oauth2/access_token?client_id={{client_id}}",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"dw",
+						"oauth2",
+						"access_token"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "{{client_id}}"
+						},
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Data /site_search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f0d7666-3a96-4c3c-998f-564fbf53b929",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"// set env variables",
+							"postman.setGlobalVariable(\"customer_list_id\", jsonData.hits[0].customer_list_link.customer_list_id);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "89858cb3-7e5e-4b40-a399-dc6528d36f5e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Origin",
+						"value": "https://{{host}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"query\": {\r\n        \"match_all_query\": {}\r\n    },\r\n    \"select\" : \"(**)\"\r\n}"
+				},
+				"url": {
+					"raw": "https://{{host}}{{data_api}}/site_search",
+					"protocol": "https",
+					"host": [
+						"{{host}}{{data_api}}"
+					],
+					"path": [
+						"site_search"
+					]
+				},
+				"description": "Get authorization via JWT - Guest Customer"
+			},
+			"response": []
+		},
+		{
+			"name": "Data /site_search {{site_id}}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f0d7666-3a96-4c3c-998f-564fbf53b929",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"// set env variables",
+							"postman.setGlobalVariable(\"customer_list_id\", jsonData.hits[0].customer_list_link.customer_list_id);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "89858cb3-7e5e-4b40-a399-dc6528d36f5e",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Origin",
+						"value": "https://{{host}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"query\" : {\r\n        \"text_query\": {\r\n            \"fields\": [\"id\", \"description\"],\r\n            \"search_phrase\": \"{{site_id}}\"\r\n        }\r\n    },\r\n    \"select\" : \"(**)\"\r\n}"
+				},
+				"url": {
+					"raw": "https://{{host}}{{data_api}}/site_search",
+					"protocol": "https",
+					"host": [
+						"{{host}}{{data_api}}"
+					],
+					"path": [
+						"site_search"
+					]
+				},
+				"description": "Find site based on {{site_id}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Data /customer_lists/*/customer_search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "05556f89-442c-40a4-bee9-71fffb635399",
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"// set env variables",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setGlobalVariable(\"customer_id\", jsonData.hits[0].data.customer_id);"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "89858cb3-7e5e-4b40-a399-dc6528d36f5e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Origin",
+						"value": "https://{{host}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"query\" : \r\n     {\r\n     \t\"term_query\": { \"fields\": [ \"credentials.enabled\" ], \"operator\": \"is\", \"values\": [true] }\r\n     },\r\n    \"select\" : \"(**)\"\r\n}"
+				},
+				"url": {
+					"raw": "https://{{host}}{{data_api}}/customer_lists/{{customer_list_id}}/customer_search",
+					"protocol": "https",
+					"host": [
+						"{{host}}{{data_api}}"
+					],
+					"path": [
+						"customer_lists",
+						"{{customer_list_id}}",
+						"customer_search"
+					]
+				},
+				"description": "Get authorization via JWT - Guest Customer"
+			},
+			"response": []
+		},
+		{
+			"name": "Data /category_search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "05556f89-442c-40a4-bee9-71fffb635399",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "89858cb3-7e5e-4b40-a399-dc6528d36f5e",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Origin",
+						"value": "https://{{host}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n      \"query\": {\r\n\r\n            \"term_query\": {\r\n\r\n            \"fields\" : [\"c_showInMenu\"],\r\n\r\n            \"operator\" : \"is\",\r\n\r\n            \"values\" : [true]\r\n\r\n        }\r\n\r\n      },\r\n\r\n      \"select\": \"(**)\"\r\n\r\n}"
+				},
+				"url": {
+					"raw": "https://{{host}}{{data_api}}/category_search",
+					"protocol": "https",
+					"host": [
+						"{{host}}{{data_api}}"
+					],
+					"path": [
+						"category_search"
+					]
+				},
+				"description": "Get authorization via JWT - Guest Customer"
+			},
+			"response": []
+		}
+	]
+}

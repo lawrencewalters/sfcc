@@ -58,7 +58,49 @@ Delete duplicates from a huge file (remove-duplicates.xslt)
 Create an inventory file when you don't know the variants (inventory.xslt)
  - pro tip #4: current element and walking the xpath tree
 
-Questions / follow up
---------------
 
-provide sample XML to go with transforms, especially
+Development Environment XML Import Setup - Specific XSLT script usage notes
+-------------------
+Below are notes on how to generate trimmed master catalog, site catalog, inventory and pricebooks given a production master and site catalog.
+
+**Using site catalog - get all the product assignments for ALL master products:**
+```
+sed -nr 's/.*product-id=\"([^"]*)".*/\1/p' /path/to/site/catalog.xml|sort|uniq > product-ids.txt
+```
+
+**Get a random subset of 100 site catalog assigned products**
+```
+echo -n productIds=> active-random-product-ids.txt
+sed -nr 's/.*product-id=\"([^"]*)".*/\1/p' /path/to/site/catalog.xml|sort|uniq|shuf -n 100|tr '\n' '|' >> active-random-product-ids.txt
+```
+**pass in the product ids to be transformed for creating the master catalog**
+```
+cat active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalog.xslt > master-catalog-trimmed.xml
+```
+
+**which really is doing this - adding the productIds=XXXX on from the file contents**
+```
+Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalog.xslt productIds=ABC123|DEF456 > master-catalog-trimmed.xml
+```
+
+**do the same for inventory - create a new inventory file using the master product id list**
+```
+cat active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-inventory-from-master-products.xslt inventoryListId="inventory_madewell_US" > inventory-trimmed.xml
+```
+
+**do the same for prices - create a new pricebook using the master product id list**
+
+**list prices**
+```
+cat active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="usd-list-prices" pricebookParentId="" > usd-list-prices.xml
+```
+
+**sale prices**
+```
+cat short-active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="usd-sale-prices" pricebookParentId="usd-list-prices" > inventory-trimmed.xml
+```
+
+**Trim site catalog to ALL categories, but only assignments for our random products**
+```
+cat active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/site/catalog.xml -xsl:generate-trimmed-site-catalog.xslt > trimmed-site-catalog.xml
+```

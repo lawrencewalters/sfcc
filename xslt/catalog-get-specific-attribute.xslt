@@ -1,3 +1,4 @@
+<!-- create a new catalog XML file with products that have a specific attribute present, and only list that attribute in the new XML. Could be useful for updating a single attribute and affecting nothing else on product definitions -->
 <xsl:stylesheet version="2.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:dw="http://www.demandware.com/xml/impex/catalog/2006-10-31" exclude-result-prefixes="dw">
@@ -5,7 +6,7 @@
     <xsl:variable name="catalog" select="/dw:catalog"/>
     <xsl:template match="dw:catalog">
         <catalog 
-            xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="colony-master-catalog">
+            xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="{current()/@catalog-id}">
             <xsl:apply-templates select="dw:product"/>
         </catalog>
     </xsl:template>

@@ -1,3 +1,4 @@
+<!-- this was a one off generation of a list of product values. The specific attributes are printed in a CSV format-->
 <xsl:stylesheet version="2.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:dw="http://www.demandware.com/xml/impex/catalog/2006-10-31" 

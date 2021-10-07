@@ -104,3 +104,10 @@ cat short-active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/mas
 ```
 cat active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/site/catalog.xml -xsl:generate-trimmed-site-catalog.xslt > trimmed-site-catalog.xml
 ```
+
+Todo
+-------------------
+- remove empty <parent/> element when no parent price book is specified in pricebook generation
+- automate the download of the production master and site catalogs from staging
+- create a shell script (or something) to run all commands at one time
+- put variation product ids into their own text file to speed processing: after getting list of master products assigned to the site catalog, do the processing that looks for variants of the masters, but output those as just product ids and save to text file. THEN use this list as the input for all the scripts, and simplify their lookup so they aren't also doing the wild master/variant product lookup.

@@ -97,10 +97,11 @@ class Program {
                     var prodval = "";
                     if(!String.IsNullOrEmpty(item.StagingValue)) {
                         stgval = item.StagingValue.Replace("\n", " ");
-                        
+                        stgval = stgval.Replace("\t", " ");
                     }
                     if(!String.IsNullOrEmpty(item.ProductionValue)) {
                         prodval = item.ProductionValue.Replace("\n"," ");
+                        prodval = prodval.Replace("\t"," ");
                     }
                     // Console.WriteLine("{0}\t{1}\t{2}",item.Preference, item.StagingValue.Replace(System.Environment.NewLine," "), item.ProductionValue.Replace(System.Environment.NewLine, " "));
                     Console.WriteLine("{0}\t{1}\t{2}",item.Preference, stgval, prodval);

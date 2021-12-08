@@ -40,7 +40,9 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-pricebook-from-master
             <currency>USD</currency>
             <display-name xml:lang="x-default">prices for the website</display-name>
             <online-flag>true</online-flag>
+            <xsl:if test="string-length($pricebookParentId) > 0">
             <parent><xsl:value-of select="$pricebookParentId"/></parent>
+            </xsl:if>
         </header>
 
         <price-tables>

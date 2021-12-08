@@ -1,4 +1,4 @@
-<!-- This XSLT is designed to trim a site catalog by passing in a list of master product ID's that are pipe-separated. This will copy all the category definitions pluse any category-assignments that include those product ids.
+<!-- This XSLT is designed to trim a site catalog by passing in a list of master product ID's that are pipe-separated. This will copy all the category definitions plus any category-assignments that include those product ids.
 
 Prerequisites:
 - complete master catalog XML (for figuring out variations of master products)

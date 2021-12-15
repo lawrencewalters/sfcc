@@ -16,7 +16,7 @@ cat active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/master/ca
 
 or
 
-Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-inventory-from-master-products.xslt inventoryListId="inventory_for_site" productIds=ABC123|DEF456 > inventory-trimmed.xml
+Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-inventory-from-master-products.xslt inventoryListId="inventory_for_site" productIds="ABC123|DEF456" > inventory-trimmed.xml
 -->
 <xsl:stylesheet version="2.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 

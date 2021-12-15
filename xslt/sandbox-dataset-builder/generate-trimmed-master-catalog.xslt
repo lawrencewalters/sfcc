@@ -15,7 +15,7 @@ cat active-random-product-ids.txt | xargs -t Transform.exe -s:/path/to/master/ca
 
 or
 
-Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalog.xslt productIds=ABC123|DEF456 > master-catalog-trimmed.xml
+Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalog.xslt productIds="ABC123|DEF456" > master-catalog-trimmed.xml
 
 -->
 <xsl:stylesheet version="2.0" 

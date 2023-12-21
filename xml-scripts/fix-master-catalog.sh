@@ -1,11 +1,11 @@
 #!/bin/sh
 set -ex
 
-#handy commands for processing colony files
+#handy commands for processing files
 WORKING=expanded2.xml
 FINAL=expanded.xml
 INPUT=$1
-OUTPUT=~/bitbucket.org/lyonsconsultinggroup/colony-brands/data_impex/data_test/catalogs/colony-master-catalog/catalog.xml
+OUTPUT=~/data_impex/data_test/catalogs/master-catalog/catalog.xml
 echo 'Processing catalog file ' + $INPUT
 
 # expand the catalog into multiple lines

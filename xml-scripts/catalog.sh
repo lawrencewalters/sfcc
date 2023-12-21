@@ -1,5 +1,5 @@
 #!/bin/sh
-#handy commands for processing colony files
+#handy commands for processing files
 # expand the catalog into multiple lines
 sed 's/[>][<]/>\n</g'  catalog-master.xml  > expanded-catalog-master.xml
 

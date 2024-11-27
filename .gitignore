@@ -1,3 +1,5 @@
 output.tsv
 *.exe
 xslt/sandbox-dataset-builder/data/*
+.env
+sbx-update/data/*

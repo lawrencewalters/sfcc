@@ -1,3 +1,5 @@
+# copy images from Staging to a sandbox for a given set of products
+
 import os
 import requests
 import xml.etree.ElementTree as ET

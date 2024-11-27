@@ -1,3 +1,5 @@
+# list all the relative image paths given a small catalog file
+
 import os
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv

@@ -101,46 +101,46 @@ sed -nr 's/.*product-id=\"([^"]*)".*/\1/p' data/site-catalog.xml|sort|uniq|shuf 
 ```
 **pass in the product ids to be transformed for creating the master catalog**
 ```
-cat data/active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-trimmed-master-catalog.xslt > data/master-catalog-trimmed.xml
+cat data/active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-trimmed-master-catalog.xslt > data/master-catalog-trimmed.xml
 ```
 
 **which really is doing this - adding the productIds=XXXX on from the file contents**
 ```
-java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-trimmed-master-catalog.xslt productIds=ABC123|DEF456 > data/master-catalog-trimmed.xml
+java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-trimmed-master-catalog.xslt productIds=ABC123|DEF456 > data/master-catalog-trimmed.xml
 ```
 
 **do the same for inventory - create a new inventory file using the master product id list**
 ```
-cat data/active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-inventory-from-master-products.xslt inventoryListId="footjoy-inventory-sea" > data/footjoy-inventory-sea.xml
+cat data/active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-inventory-from-master-products.xslt inventoryListId="footjoy-inventory-sea" > data/footjoy-inventory-sea.xml
 ```
 
 **do the same for prices - create a new pricebook using the master product id list**
 
 **list prices**
 ```
-cat data/active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="myr-list-prices" currency="MYR" pricebookParentId="" > data/pricebooks/myr-list-prices.xml
-cat data/active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="sgd-list-prices" currency="SGD" pricebookParentId="" > data/pricebooks/sgd-list-prices.xml
-cat data/active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="thb-list-prices" currency="THB" pricebookParentId="" > data/pricebooks/thb-list-prices.xml
+cat data/active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="myr-list-prices" currency="MYR" pricebookParentId="" > data/pricebooks/myr-list-prices.xml
+cat data/active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="sgd-list-prices" currency="SGD" pricebookParentId="" > data/pricebooks/sgd-list-prices.xml
+cat data/active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="thb-list-prices" currency="THB" pricebookParentId="" > data/pricebooks/thb-list-prices.xml
 ```
 
 **sale prices**
 Make a `data/short-active-random-product-ids.txt` so that only some of the products will have sale prices
 ```
-cat data/short-active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="myr-sale-prices" currency="MYR" pricebookParentId="myr-list-prices" > data/pricebooks/myr-sale-prices.xml
-cat data/short-active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="sgd-sale-prices" currency="SGD" pricebookParentId="sgd-list-prices" > data/pricebooks/sgd-sale-prices.xml
-cat data/short-active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="thb-sale-prices" currency="THB" pricebookParentId="thb-list-prices" > data/pricebooks/thb-sale-prices.xml
+cat data/short-active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="myr-sale-prices" currency="MYR" pricebookParentId="myr-list-prices" > data/pricebooks/myr-sale-prices.xml
+cat data/short-active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="sgd-sale-prices" currency="SGD" pricebookParentId="sgd-list-prices" > data/pricebooks/sgd-sale-prices.xml
+cat data/short-active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="thb-sale-prices" currency="THB" pricebookParentId="thb-list-prices" > data/pricebooks/thb-sale-prices.xml
 ```
 
 **inventory pricebooks**
 ```
-cat data/in-stock-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="myr-list-prices-inventory" currency="MYR" pricebookParentId="" > data/pricebooks/myr-list-prices-inventory.xml
-cat data/short-active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="sgd-list-prices-inventory" currency="SGD" pricebookParentId="" > data/pricebooks/sgd-list-prices-inventory.xml
-cat data/active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="thb-list-prices-inventory" currency="THB" pricebookParentId="" > data/pricebooks/thb-list-prices-inventory.xml
+cat data/in-stock-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="myr-list-prices-inventory" currency="MYR" pricebookParentId="" > data/pricebooks/myr-list-prices-inventory.xml
+cat data/short-active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="sgd-list-prices-inventory" currency="SGD" pricebookParentId="" > data/pricebooks/sgd-list-prices-inventory.xml
+cat data/active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/master-catalog.xml -xsl:generate-pricebook-from-master-products.xslt pricebookId="thb-list-prices-inventory" currency="THB" pricebookParentId="" > data/pricebooks/thb-list-prices-inventory.xml
 ```
 
 **Trim site catalog to ALL categories, but only assignments for our random products**
 ```
-cat data/active-random-product-ids.txt | xargs -t java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:data/site-catalog.xml -xsl:generate-trimmed-site-catalog.xslt > data/footjoy-storefront-sea/catalog.xml
+cat data/active-random-product-ids.txt | xargs -t java -jar ~/SaxonHE12-5J/saxon-he-12.5.jar -s:data/site-catalog.xml -xsl:generate-trimmed-site-catalog.xslt > data/footjoy-storefront-sea/catalog.xml
 ```
 
 Todo

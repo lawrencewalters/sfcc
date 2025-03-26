@@ -1,6 +1,12 @@
+data
+node_modules
+tmp
+
 output.tsv
 *.exe
-xslt/sandbox-dataset-builder/data/*
 .env
-sbx-update/data/*
-sbx-update/output/*
+dw.json
+dw.*.json
+**/dw.json
+**/*.txt
+**/*.csv

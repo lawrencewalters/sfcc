@@ -1,7 +1,6 @@
-# copy static recommendations from a big catalog to a smaller one
-# given a small set of product sin product_file_path, copy
-# the static recommendations from catalog_file_path into a
-# new file output_file_path
+# copy static recommendations from a big catalog (catalog_file_path)
+# to a smaller one (output_file_path) given a small set of products 
+# in an XML catalog file (product_file_path)
 #
 # useful for acushnet's club customizer that relies on static
 # recommendations for grips and shafts

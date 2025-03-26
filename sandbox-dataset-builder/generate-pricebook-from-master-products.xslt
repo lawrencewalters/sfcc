@@ -29,6 +29,7 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-pricebook-from-master
     
     <xsl:param name="productIds"/>
     <xsl:param name="pricebookId"/>
+    <xsl:param name="currency"/>
     <xsl:param name="pricebookParentId"/>
     <xsl:output method="xml" indent="yes"/>
     <xsl:variable name="catalog" select="/dw:catalog"/>
@@ -37,7 +38,7 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-pricebook-from-master
 <pricebooks xmlns="http://www.demandware.com/xml/impex/pricebook/2006-10-31">
     <pricebook>
         <header pricebook-id="{$pricebookId}">
-            <currency>USD</currency>
+            <currency><xsl:value-of select="$currency"/></currency>
             <display-name xml:lang="x-default">prices for the website</display-name>
             <online-flag>true</online-flag>
             <xsl:if test="string-length($pricebookParentId) > 0">

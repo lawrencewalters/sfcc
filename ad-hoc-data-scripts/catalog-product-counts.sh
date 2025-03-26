@@ -19,7 +19,7 @@ done
 
 # lint the expanded file
 echo "Linting file now"
-xmllint $CATALOG --schema ~/docs/proj/col/xml-xsd-samples/catalog.xsd --noout
+xmllint $CATALOG --schema schema/catalog.xsd --noout
 
 # count distinct products
 echo "Total Distinct products:"

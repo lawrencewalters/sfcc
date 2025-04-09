@@ -1,3 +1,3 @@
 #!/bin/sh
-npx sfcc-ci client:auth -r --selfsigned
-npx sfcc-ci sandbox:stop -s $1 --selfsigned
+npx sfcc-ci client:auth -r
+npx sfcc-ci sandbox:stop -s $1

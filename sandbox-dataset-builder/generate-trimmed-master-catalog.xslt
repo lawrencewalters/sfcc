@@ -32,8 +32,23 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalo
         </catalog>
     </xsl:template>
     <xsl:template match="dw:header">
-        <xsl:copy-of select="."/>
+        <header xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">
+            <xsl:apply-templates select="dw:image-settings"/>
+        </header>
     </xsl:template>
+    <xsl:template match="dw:image-settings">
+        <image-settings xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">
+            <external-location xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" >
+                <http-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">http://development-na.titleist.com/dw/image/v2/AAZW_DEV/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</http-url>
+                <https-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">https://development-na.titleist.com/dw/image/v2/AAZW_DEV/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</https-url>
+            </external-location>
+            <!-- Copy all child elements except internal-location -->
+            <xsl:for-each select="*[name() != 'internal-location']">
+                <xsl:copy-of select="."/>
+            </xsl:for-each>
+        </image-settings>
+    </xsl:template>
+
     <xsl:template match="dw:product"/>
     <xsl:template match="dw:product[contains($productIds,@product-id)]">
         <xsl:variable name="masterProduct" select="."/>

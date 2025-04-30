@@ -30,6 +30,7 @@ Transform.exe -s:/path/to/site/catalog.xml -xsl:generate-trimmed-site-catalog.xs
             <xsl:apply-templates select="dw:header"/>
             <xsl:apply-templates select="dw:category"/>
             <xsl:apply-templates select="dw:category-assignment"/>
+            <xsl:apply-templates select="dw:recommendation"/>
         </catalog>
     </xsl:template>
     <xsl:template match="dw:header">
@@ -40,6 +41,10 @@ Transform.exe -s:/path/to/site/catalog.xml -xsl:generate-trimmed-site-catalog.xs
     </xsl:template>
     <xsl:template match="dw:category-assignment"/>
     <xsl:template match="dw:category-assignment[contains($productIds,@product-id)]">
+        <xsl:copy-of select="."/>
+    </xsl:template>
+    <xsl:template match="dw:recommendation"/>
+    <xsl:template match="dw:recommendation[contains($productIds,@source-id)]">
         <xsl:copy-of select="."/>
     </xsl:template>
 </xsl:stylesheet>

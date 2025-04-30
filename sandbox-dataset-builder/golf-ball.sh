@@ -1,0 +1,9 @@
+# get a single product!
+java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:"/home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/staging/catalogs/titleist-master/catalog.xml" -xsl:/home/lwalters/github.com/lawrencewalters/sfcc/sandbox-dataset-builder/generate-trimmed-master-catalog.xslt productIds="005PV1T-J|T2129A-MPVCL|T2126C-MPV|T2129A-MPV|T2129A-MPVLR|T2029A-EA-MPVCL|T2029A-MPV|T2029A-MPVLR|T2029A-MPVCL|T2127C-MPV" > /home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/ASA-5375-jp-ball/catalogs/titleist-master/catalog.xml
+
+# skip inventory (sandbox is default in stock)
+
+# pricing!
+java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:/home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/staging/catalogs/titleist-master/catalog.xml -xsl:/home/lwalters/github.com/lawrencewalters/sfcc/sandbox-dataset-builder/generate-pricebook-from-master-products.xslt  productIds="005PV1T-J|T2126C-MPV|T2129A-MPVCL|T2129A-MPV|T2129A-MPVLR|T2029A-MPVLR|T2029A-EA-MPVCL|T2029A-MPV|T2029A-MPVCL|T2127C-MPV" pricebookId="jpy-titleist-list" currency="JPY" pricebookParentId="" > /home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/ASA-5375-jp-ball/pricebooks/jpy-titleist-list.xml
+
+java -jar /home/lwalters/SaxonHE12-5J/saxon-he-12.5.jar -s:/home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/staging/catalogs/titleist-storefront-JP/catalog.xml -xsl:/home/lwalters/github.com/lawrencewalters/sfcc/sandbox-dataset-builder/generate-trimmed-site-catalog.xslt  productIds="005PV1T-J|T2029A-MPVLR|T2129A-MPVCL|T2126C-MPV|T2129A-MPV|T2129A-MPVLR|T2029A-EA-MPVCL|T2029A-MPV|T2029A-MPVCL|T2127C-MPV" > /home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/ASA-5375-jp-ball/catalogs/titleist-storefront-JP/catalog.xml

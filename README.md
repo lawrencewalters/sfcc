@@ -1,13 +1,29 @@
-Salesforce Commerce Cloud B2C tools
+# Salesforce Commerce Cloud B2C tools
 
-ad-hoc-data-scripts: xslt, shell scripts for messing with data
-browser-plugin: tampermonkey script for making business manager more friendly
-data: place to put data sets for upload to an SFCC instance
-log-scripts: tools for parsing logs
-ocapi: postman collection
-sandbox-control: starting/stopping/creating on demand sandboxes
-sandbox-dataset-builder: create entire sets of data for a site based on trimming production data
-xml-schema: XSD from SFCC for validating xml
+## ad-hoc-data-scripts: xslt, shell scripts for messing with data
+## browser-plugin: tampermonkey script for making business manager more friendly
+## data: place to put data sets for upload to an SFCC instance
+## log-scripts: tools for parsing logs
+## ocapi: postman collection
+## sandbox-control: starting/stopping/creating on demand sandboxes
+
+## sandbox-dataset-builder
+
+create entire sets of data for a site based on trimming production data
+
+### Setup
+
+### Environment Variables
+
+The script relies on the following environment variables defined in `paths.env`:
+
+- `TMP_DIR`: Temporary directory for storing intermediate files.
+- `SAXON_JAR`: Path to the Saxon JAR file for XSLT transformations.
+- `SCRIPT_DIR`: Directory containing the XSLT scripts.
+- `IMAGE_BASE_URL`: Base URL for image settings in the generated catalogs (e.g., `hostname.com/dw/image/v2/REALM_DEV/STG`).
+
+
+## xml-schema: XSD from SFCC for validating xml
 
 
 XSLT fun

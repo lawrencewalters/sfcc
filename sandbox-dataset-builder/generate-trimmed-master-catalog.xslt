@@ -23,6 +23,7 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalo
     xmlns:dw="http://www.demandware.com/xml/impex/catalog/2006-10-31" exclude-result-prefixes="dw">
     <xsl:output method="xml"/>
     <xsl:param name="productIds"/>
+    <xsl:param name="imageBaseUrl"/>
     <xsl:variable name="catalog" select="/dw:catalog"/>
     <xsl:template match="dw:catalog">
         <catalog 
@@ -39,8 +40,10 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalo
     <xsl:template match="dw:image-settings">
         <image-settings xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">
             <external-location xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" >
-                <http-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">http://development-na.titleist.com/dw/image/v2/AAZW_DEV/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</http-url>
-                <https-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">https://development-na.titleist.com/dw/image/v2/AAZW_DEV/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</https-url>
+                <http-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31"
+                >http://<xsl:value-of select="$imageBaseUrl"/>/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</http-url>
+                <https-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31"
+                >https://<xsl:value-of select="$imageBaseUrl"/>/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</https-url>
             </external-location>
             <!-- Copy all child elements except internal-location -->
             <xsl:for-each select="*[name() != 'internal-location']">

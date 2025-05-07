@@ -10,3 +10,4 @@ dw.*.json
 **/dw.json
 **/*.txt
 **/*.csv
+paths.env

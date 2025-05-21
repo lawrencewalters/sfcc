@@ -31,7 +31,7 @@ java -jar "$SAXON_JAR" -s:"$TMP_DIR/staging/catalogs/$2/catalog.xml" -xsl:"$SCRI
 
 # get all the variations now that we have picked them, this will save time later
 echo -n "productIds=" > "$TMP_DIR/$dir_name/variations.txt"
-grep -oP '(?<=product-id=")[^"]+' "$TMP_DIR/$dir_name/catalogs/$2/catalog.xml" | sort | uniq | paste -sd '|' >> "$TMP_DIR/$dir_name/variations.txt"
+grep -oP '(?<=product-id=")[^"]+' "$TMP_DIR/$dir_name/catalogs/$2/catalog.xml" | sort | uniq | awk '{print "\"" $0 "\""}' | paste -sd'|' - >> "$TMP_DIR/$dir_name/variations.txt"
 
 # skip inventory (sandbox is default in stock)
 
@@ -49,5 +49,4 @@ fi
 # site catalog
 java -jar "$SAXON_JAR" -s:"$TMP_DIR/staging/catalogs/$3/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-site-catalog.xslt" productIds="$1" > "$TMP_DIR/$dir_name/catalogs/$3/catalog.xml"
 
-echo ""
-echo "See $TMP_DIR/$dir_name for the generated files."
+echo "\nSee $TMP_DIR/$dir_name for the generated files."

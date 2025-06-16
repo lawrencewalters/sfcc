@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SFCC Business Manager
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Handy business manager management scripts ALT-D to open Admin menu, ALT-J for Merchant Tools
 // @author       Lawrence Walters
 // @match        https://*/on/demandware.store/Sites-Site*
@@ -56,7 +56,27 @@
         }
     }
 
-    // Run on page load
+    // always show all results in lists except in a few places
+    const NEVERALL = [
+        "/on/demandware.store/Sites-Site/default/ViewOrderList_52-Dispatch",
+        "/on/demandware.store/Sites-Site/default/ViewReplicationProcessList-List",
+        "/on/demandware.store/Sites-Site/default/ViewReplicationProcessList-Dispatch",
+        "/on/demandware.store/Sites-Site/default/ViewCodeReplicationProcessList-List",
+        "/on/demandware.store/Sites-Site/default/ViewCodeReplicationProcessList-Dispatch",
+    ];
+
+    const alwaysAll = () => {
+        if (NEVERALL.indexOf(window.location.pathname) === -1) {
+            document.querySelectorAll("button").forEach((button) => {
+                if (button.innerText === "All") {
+                    button.click();
+                }
+            });
+        }
+    };
+
+    alwaysAll();
+
     window.addEventListener('DOMContentLoaded', setTitleFromTable);
 
     // Optional: Run again if the page content changes dynamically

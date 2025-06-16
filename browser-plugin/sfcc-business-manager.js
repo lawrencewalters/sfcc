@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name         SFCC Business Manager
 // @namespace    http://tampermonkey.net/
-// @version      2023-12-15
+// @version      1.0.0
 // @description  Handy business manager management scripts ALT-D to open Admin menu, ALT-J for Merchant Tools
 // @author       Lawrence Walters
 // @match        https://*/on/demandware.store/Sites-Site*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=salesforce.com
 // @grant        none
+// @updateURL    https://raw.githubusercontent.com/lawrencewalters/sfcc/refs/heads/main/browser-plugin/sfcc-business-manager.js
+// @downloadURL  https://raw.githubusercontent.com/lawrencewalters/sfcc/refs/heads/main/browser-plugin/sfcc-business-manager.js
 // ==/UserScript==
 
 (function() {

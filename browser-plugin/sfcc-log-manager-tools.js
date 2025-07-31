@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         SFCC Log Manager tools
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
-// @description  try to take over the world!
+// @version      1.0.1
+// @description  Tools for improving Log Manager usage, such as making related attributes searchable and emails clickable.
 // @author       Lawrence Walters
 // @match        https://logcenter-us.visibility.commercecloud.salesforce.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=salesforce.com

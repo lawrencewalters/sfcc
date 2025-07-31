@@ -2,7 +2,7 @@
 // @name         SFCC Log Manager tools
 // @namespace    http://tampermonkey.net/
 // @version      1.0.0
-// @description  Tools for improving Log Manager usage, such as making related attributes searchable and emails clickable.
+// @description  try to take over the world!
 // @author       Lawrence Walters
 // @match        https://logcenter-us.visibility.commercecloud.salesforce.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=salesforce.com
@@ -13,6 +13,16 @@
 
 (function() {
     'use strict';
+
+    // set page size to 100 if it is not
+    if(location.pathname.startsWith('/logcenter/search')) {
+        const link = document.querySelector('a#page-size-100:not(.btn-primary)');
+        if (link) {
+            link.click();
+            return;
+        }
+    }
+
 
     function getCsrfValue() {
         const link = document.querySelector('a[href*="_csrf="]');
@@ -100,6 +110,38 @@
         });
     }
 
+    function makeCustomerUUIDSearchable() {
+        // Find the text node containing the pattern "Customer UUID "
+        const xpath = "//text()[contains(., 'Customer UUID')]";
+        const result = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+
+        if (result.singleNodeValue) {
+            const textNode = result.singleNodeValue;
+            const parentElement = textNode.parentElement;
+
+            // Extract the UUID using regex
+            var uuidMatch = textNode.textContent.match(/Customer UUID(\:| \(guest\):) ([a-zA-Z0-9]+)/);
+
+            if (uuidMatch) {
+                const fullUUID = uuidMatch[2]; // The captured UUID
+
+                // Replace the text with a clickable span for the UUID part
+                const newHTML = textNode.textContent.replace(
+                    /Customer UUID(\:| \(guest\):) ([a-zA-Z0-9]+)/,
+                    'Customer UUID$1 <span id="clickable-uuid" style="color: blue; text-decoration: underline; cursor: pointer;">$2</span>'
+                );
+
+                parentElement.innerHTML = newHTML;
+
+                // Add click event listener
+                document.getElementById('clickable-uuid').addEventListener('click', function() {
+                    // Copy to clipboard
+                    searchFromAnywhere(fullUUID);
+                });
+            }
+        }
+    }
+
     function makeEmailsSearchable() {
         const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
 
@@ -154,6 +196,7 @@
     // only do structured related attributes on log detail pages
     if (location.pathname.startsWith('/logcenter/search/daralog')) {
         makeRelatedAttributesSearchable();
+        makeCustomerUUIDSearchable();
 
         // MutationObserver for dynamic content
         const observer = new MutationObserver(makeRelatedAttributesSearchable);

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         SFCC Business Manager
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Handy business manager management scripts ALT-D to open Admin menu, ALT-J for Merchant Tools
 // @author       Lawrence Walters
 // @match        https://*/on/demandware.store/Sites-Site*
@@ -42,18 +42,22 @@
 
     function setTitleFromTable() {
         const hostname = window.location.hostname;
-        var firstPart = hostname.split('.')[0];
-        firstPart = firstPart.split('-')[0]; // handle 'staging-na-acushnetcompany' - only want 'staging'
+        var regex = /(^staging|^production|^development|^[^\.]+)/;
+        var match = hostname.match(regex);
+        console.log(JSON.stringify(match));
+        var firstPart = match ? match[1] : hostname; // handle 'staging-na-xxxx' or 'xxxx-011.dx.commercecloud.salesforce.com' only want 'staging' or 'abcd-011'
 
-        var td = document.querySelector('td.table_title');
-        if (td && td.textContent.trim()) {
-            document.title = firstPart + ' ' + td.textContent.trim();
-        } else {
-            td = document.querySelector('td.overview_title');
-            if (td && td.textContent.trim()) {
-                document.title = firstPart + ' ' + td.textContent.trim();
+        const xpathToSearch = ['td.table_title','td.overview_title', 'div.table_title'];
+
+        for(const xpath of xpathToSearch) {
+            console.log(xpath);
+            var titleElement = document.querySelector(xpath);
+            if (titleElement && titleElement.textContent.trim()) {
+                document.title = firstPart + ' ' + titleElement.textContent.trim();
+                break;
             }
         }
+
     }
 
     // always show all results in lists except in a few places

@@ -1,7 +1,7 @@
-<!-- This XSLT is designed to trim a site catalog by passing in a list of master product ID's that are pipe-separated. This will copy all the category definitions plus any category-assignments that include those product ids.
+<!-- This XSLT is designed to trim a site catalog by passing in a list of product ID's (master and variant - note this file no longer finds master products for variants) that are pipe-separated. This will copy all the category definitions plus any category-assignments and recommendations that include those product ids.
 
 Prerequisites:
-- complete master catalog XML (for figuring out variations of master products)
+- complete master catalog XML (for figuring out variations of master products) - should be done in prior step
 - complete site catalog XML (for finding products currently assigned to site)
 - Saxon HE XSLT parser (used Saxon-HE 9.9.1.7N from Saxonica see http://www.saxonica.com), Transform.exe is on path
 - Linux style tools available. Specifically cat, sed, sort, uniq, shuf, xargs. Used Windows Subsystem for Linux (WSL) with Ubuntu 18 but Git Bash may also work.

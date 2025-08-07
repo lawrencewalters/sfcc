@@ -11,4 +11,4 @@ input_file="$1"
 while IFS=":" read -r url category_id; do
   # Use sed to replace the page-url with the category-id
   sed -i "s|\"/*$url/*\"|\"\$url('Search-Show','cgid','$category_id')$\"|g" "$input_file"
-done < mapping.txt
+done < /home/lwalters/github.com/lawrencewalters/sfcc/ad-hoc-data-scripts/titleist_url_to_category_id_mapping.txt

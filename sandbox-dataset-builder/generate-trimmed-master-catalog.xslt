@@ -30,6 +30,7 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalo
             xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="{current()/@catalog-id}">
             <xsl:apply-templates select="dw:header"/>
             <xsl:apply-templates select="dw:product"/>
+            <xsl:apply-templates select="dw:variation-attribute"/>
         </catalog>
     </xsl:template>
     <xsl:template match="dw:header">
@@ -60,6 +61,10 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalo
                 <xsl:copy-of select="$catalog/dw:product[@product-id = current()/@product-id]"/>
             </xsl:if>
         </xsl:for-each>
+        <xsl:copy-of select="."/>
+    </xsl:template>
+
+    <xsl:template match="dw:variation-attribute">
         <xsl:copy-of select="."/>
     </xsl:template>
 </xsl:stylesheet>

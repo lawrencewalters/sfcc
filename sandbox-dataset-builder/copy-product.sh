@@ -27,7 +27,7 @@ mkdir "$TMP_DIR/$dir_name/catalogs/$3"
 mkdir "$TMP_DIR/$dir_name/pricebooks"
 
 # get products from master catalog
-java -jar "$SAXON_JAR" -s:"$TMP_DIR/staging/catalogs/$2/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-master-catalog.xslt" productIds="$1"  imageBaseUrl="$IMAGE_BASE_URL" > "$TMP_DIR/$dir_name/catalogs/$2/catalog.xml"
+java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/catalogs/$2/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-master-catalog.xslt" productIds="$1"  imageBaseUrl="$IMAGE_BASE_URL" > "$TMP_DIR/$dir_name/catalogs/$2/catalog.xml"
 
 # get all the variations now that we have picked them, this will save time later
 echo -n "productIds=" > "$TMP_DIR/$dir_name/variations.txt"
@@ -36,17 +36,19 @@ grep -oP '(?<=product-id=")[^"]+' "$TMP_DIR/$dir_name/catalogs/$2/catalog.xml" |
 # skip inventory (sandbox is default in stock)
 
 # real pricing using variations.txt
-cat "$TMP_DIR/$dir_name/variations.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TMP_DIR/staging/pricebooks/$4.xml" -xsl:"$SCRIPT_DIR/generate-pricebook-from-variations.xslt" pricebookId="$4" currency="$5" pricebookParentId="" > "$TMP_DIR/$dir_name/pricebooks/$4.xml"
+cat "$TMP_DIR/$dir_name/variations.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/pricebooks/$4.xml" -xsl:"$SCRIPT_DIR/generate-pricebook-from-variations.xslt" pricebookId="$4" currency="$5" pricebookParentId="" > "$TMP_DIR/$dir_name/pricebooks/$4.xml"
 
 # get the sale pricebook if provided
-if [ -n "$6" ] && [ -f "$TMP_DIR/staging/pricebooks/$6.xml" ]; then
-    echo "Sale pricebook file exists: $TMP_DIR/staging/pricebooks/$6.xml"
-    cat "$TMP_DIR/$dir_name/variations.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TMP_DIR/staging/pricebooks/$6.xml" -xsl:"$SCRIPT_DIR/generate-pricebook-from-variations.xslt" pricebookId="$6" currency="$6" pricebookParentId="$4" > "$TMP_DIR/$dir_name/pricebooks/$6.xml"
+if [ -n "$6" ] && [ -f "$TMP_DIR/$SOURCE_DIR/pricebooks/$6.xml" ]; then
+    echo "Sale pricebook file exists: $TMP_DIR/$SOURCE_DIR/pricebooks/$6.xml"
+    cat "$TMP_DIR/$dir_name/variations.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/pricebooks/$6.xml" -xsl:"$SCRIPT_DIR/generate-pricebook-from-variations.xslt" pricebookId="$6" currency="$6" pricebookParentId="$4" > "$TMP_DIR/$dir_name/pricebooks/$6.xml"
 else
     echo "No sale pricebook parameter provided or file does not exist."
 fi
 
 # site catalog
-java -jar "$SAXON_JAR" -s:"$TMP_DIR/staging/catalogs/$3/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-site-catalog.xslt" productIds="$1" > "$TMP_DIR/$dir_name/catalogs/$3/catalog.xml"
+java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/catalogs/$3/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-site-catalog.xslt" productIds="$1" > "$TMP_DIR/$dir_name/catalogs/$3/catalog.xml"
 
 echo "\nSee $TMP_DIR/$dir_name for the generated files."
+
+npx b2c-tools import run "$TMP_DIR/$dir_name"

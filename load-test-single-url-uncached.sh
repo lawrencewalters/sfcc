@@ -20,7 +20,7 @@ if [ -z "$PASSWORD" ] || [ "$PASSWORD" == "null" ]; then
 fi
 
 # Define the base URL using the hostname from dw.json
-BASE_URL="https://${HOSTNAME}/s/kjus/us/en/men/golf/rain-and-wind/"
+BASE_URL="https://${HOSTNAME}/us/en/men/golf/rain-and-wind/"
 
 # Define the username and password for basic authentication
 USERNAME="storefront"  # Replace with your username
@@ -32,7 +32,7 @@ USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 response_times=()
 
 # Loop to make 100 requests
-for i in {1..100}; do
+for i in {1..1}; do
     # Generate a random query parameter value
     RANDOM_VALUE=$RANDOM
 
@@ -41,7 +41,8 @@ for i in {1..100}; do
 
     # Time the curl request and capture the response time
     START_TIME=$(date +%s%3N)
-    curl -s -A "$USER_AGENT" -u "$USERNAME:$PASSWORD" "$FULL_URL" > /dev/null  # Add basic authentication
+    curl -v -s -A "$USER_AGENT" "$FULL_URL" 
+    # curl -v -s -A "$USER_AGENT" -u "$USERNAME:$PASSWORD" "$FULL_URL" > /dev/null  # Add basic authentication
     END_TIME=$(date +%s%3N)
 
     # Calculate the response time in milliseconds

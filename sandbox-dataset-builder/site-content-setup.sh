@@ -44,6 +44,11 @@ cat "$SCRIPT_DIR/data/categoryIds.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TM
 
 cat "$SCRIPT_DIR/data/categoryIds.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TMP_DIR/$dir_name/sites/$2/slots.xml" -xsl:"$SCRIPT_DIR/get-content-ids-from-slots.xslt" > data/contentIds.txt
 
+# get the content asset IDs referenced in code
+find /home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet -name "*.isml" -type f -exec grep -o 'aid="[^"]*"' {} \; | sed 's/aid="//g' | sed 's/"//g' | sort | uniq | grep '^[a-z]' | paste -sd'|' - >> data/contentIds.txt
+
+# TODO: get the content ids referenced by product custom attributes or other places?
+
 # generate trimmed library
     # input: staging library.xml, file with list of contentIds to retrieve
     # output: trimmed content library
@@ -78,5 +83,11 @@ java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/catalogs/$3/catalog.xml" -xsl:"$
     # output: trimmed content library updated in place
 
 ./update-content-urls-with-category-ids.sh "$TMP_DIR/$dir_name/libraries/$4/library.xml"
+
+# post-process the content library to fix hostnames to sandbox urls
+    # input: trimmed content library, map of production url hostname: sandbox hostname + site path in file data/url-to-sandbox-mapping.txt
+    # output: trimmed content library updated in place
+
+./update-content-site-urls.sh "$TMP_DIR/$dir_name/libraries/$4/library.xml"
 
 npx b2c-tools import run "$TMP_DIR/$dir_name"

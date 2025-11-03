@@ -2,7 +2,7 @@
 <xsl:stylesheet version="2.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:dw="http://www.demandware.com/xml/impex/catalog/2006-10-31" exclude-result-prefixes="dw">
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" indent="yes" omit-xml-declaration="no"/>
     <xsl:variable name="catalog" select="/dw:catalog"/>
     <xsl:template match="dw:catalog">
         <catalog 

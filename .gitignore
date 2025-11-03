@@ -11,3 +11,4 @@ dw.*.json
 **/*.txt
 **/*.csv
 paths.env
+**/output/**

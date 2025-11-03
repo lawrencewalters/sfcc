@@ -1,7 +1,7 @@
 <xsl:stylesheet version="2.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns:dw="http://www.demandware.com/xml/impex/customer/2006-10-31" >
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" indent="yes" omit-xml-declaration="no"/>
 
    <!-- Identity transform -->
    <xsl:template match="@* | node()">

@@ -7,7 +7,7 @@
 <xsl:template match="dw:custom-type">
 <xsl:value-of select="concat('&#10;', dw:display-name,'&#10;------&#10;')"/>
 <xsl:value-of select="concat('|ID|', @type-id,'|&#10;')"/>
-<xsl:value-of select="concat('|Key|',dw:key-definition/[@attribute-id], '|&#10;')"/>
+<!-- <xsl:value-of select="concat('|Key|',dw:key-definition/[@attribute-id], '|&#10;')"/> -->
 <xsl:value-of select="concat('|Description|', dw:description,'|&#10;')"/>
 <xsl:text>|Data Replication|</xsl:text>
 <xsl:choose>

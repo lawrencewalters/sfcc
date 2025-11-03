@@ -4,7 +4,7 @@
     xmlns:dw="http://www.demandware.com/xml/impex/pricebook/2006-10-31" 
     exclude-result-prefixes="dw" >
     
-    <xsl:output method="xml"/>
+    <xsl:output method="xml" indent="yes" omit-xml-declaration="no"/>
     <xsl:template match="dw:pricebooks"><xsl:text>
 </xsl:text>
         <pricebooks xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 

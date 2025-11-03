@@ -1,50 +1,60 @@
-# copy static recommendations from a big catalog (source_storefront_catalog_file_path)
-# to a smaller one (output_file_path) given a small set of products 
-# in an XML catalog file (source_master_catalog)
-#
-# useful for acushnet's club customizer that relies on static
-# recommendations for grips and shafts
-
 import os
 import sys
+import argparse
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Check if command line arguments are provided
-if len(sys.argv) == 7:
-    # Use command line arguments with variations output directory
-    source_master_catalog = sys.argv[1]
-    storefront_catalog_id = sys.argv[2]
-    source_storefront_catalog_file_path = sys.argv[3]
-    output_file_path = sys.argv[4]
-    limit_recommendations = sys.argv[5].lower() == 'true'
-    rec_targets_output_dir = sys.argv[6]
-elif len(sys.argv) == 6:
-    # Use command line arguments
-    source_master_catalog = sys.argv[1]
-    storefront_catalog_id = sys.argv[2]
-    source_storefront_catalog_file_path = sys.argv[3]
-    output_file_path = sys.argv[4]
-    limit_recommendations = sys.argv[5].lower() == 'true'
-    rec_targets_output_dir = None
-elif len(sys.argv) == 5:
-    # Backward compatibility - no limit flag provided
-    source_master_catalog = sys.argv[1]
-    storefront_catalog_id = sys.argv[2]
-    source_storefront_catalog_file_path = sys.argv[3]
-    output_file_path = sys.argv[4]
-    limit_recommendations = False
-    rec_targets_output_dir = None
-else:
-    # Use default values (for backward compatibility)
-    source_master_catalog = '/home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/wedges/catalogs/titleist-clubs-master/catalog.xml'
-    storefront_catalog_id = 'titleist-storefront'
-    source_storefront_catalog_file_path = '/home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet/tmp/staging/catalogs/titleist-storefront/catalog.xml'
-    output_file_path = 'output/recommendations_output.xml'
-    limit_recommendations = False
-    rec_targets_output_dir = None
+# Parse command line arguments
+parser = argparse.ArgumentParser(
+    description='Copy static recommendations from a big catalog to a smaller one given a small set of products',
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    epilog='''
+Examples:
+  # Basic usage
+  python3 generate-static-recs.py --master-catalog master.xml --catalog-id storefront-id --source-catalog source.xml --output output.xml
+  
+  # With recommendation limits
+  python3 generate-static-recs.py --master-catalog master.xml --catalog-id storefront-id --source-catalog source.xml --output output.xml --limit-recs
+  
+  # With limits and custom output directory
+  python3 generate-static-recs.py --master-catalog master.xml --catalog-id storefront-id --source-catalog source.xml --output output.xml --limit-recs --targets-dir /path/to/output
+    '''
+)
+
+parser.add_argument('--master-catalog', '-m',
+                    required=True,
+                    help='Path to the master catalog XML file containing source products')
+
+parser.add_argument('--catalog-id', '-c',
+                    required=True,
+                    help='ID of the storefront catalog for the output XML')
+
+parser.add_argument('--source-catalog', '-s',
+                    required=True,
+                    help='Path to the source storefront catalog XML file containing recommendations')
+
+parser.add_argument('--output', '-o',
+                    required=True,
+                    help='Path where the filtered recommendations XML will be written')
+
+parser.add_argument('--limit-recs', '-l',
+                    action='store_true',
+                    help='Limit recommendations (20 max target IDs, 3 per type)')
+
+parser.add_argument('--targets-dir', '-t',
+                    help='Directory where recs-targets.txt will be written (defaults to current directory)')
+
+args = parser.parse_args()
+
+# Assign parsed arguments to variables
+source_master_catalog = args.master_catalog
+storefront_catalog_id = args.catalog_id
+source_storefront_catalog_file_path = args.source_catalog
+output_file_path = args.output
+limit_recommendations = args.limit_recs
+rec_targets_output_dir = args.targets_dir
 
 # Parse the product XML file
 product_tree = ET.parse(source_master_catalog)
@@ -52,6 +62,9 @@ product_root = product_tree.getroot()
 
 # Define the namespace
 namespace = {'ns': 'http://www.demandware.com/xml/impex/catalog/2006-10-31'}
+
+# Register namespace to avoid ns0: prefix in output
+ET.register_namespace('', 'http://www.demandware.com/xml/impex/catalog/2006-10-31')
 
 # Extract product-id attribute values
 product_ids = [product.get('product-id') for product in product_root.findall('.//ns:product', namespaces=namespace)]
@@ -61,8 +74,7 @@ storefront_catalog_tree = ET.parse(source_storefront_catalog_file_path)
 storefront_catalog_root = storefront_catalog_tree.getroot()
 
 # Create a new XML tree for the output
-output_root = ET.Element('catalog', {
-    'xmlns': 'http://www.demandware.com/xml/impex/catalog/2006-10-31',
+output_root = ET.Element('{http://www.demandware.com/xml/impex/catalog/2006-10-31}catalog', {
     'catalog-id': storefront_catalog_id
 })
 

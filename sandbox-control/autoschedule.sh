@@ -9,7 +9,10 @@ if [ "$#" -ne 3 ]; then
     echo "Usage: $0 <sandbox> <start_hour> <stop_hour>"
     exit 1
 fi
-sfcc-ci client:auth -r
-sfcc-ci sandbox:update --sandbox $1 --auto-scheduled true --start-scheduler "{\"weekdays\":[\"MONDAY\",\"TUESDAY\",\"WEDNESDAY\",\"THURSDAY\",\"FRIDAY\"],\"time\":\"$2:00:00-05:00\"}" --stop-scheduler "{\"weekdays\":[\"MONDAY\",\"TUESDAY\",\"WEDNESDAY\",\"THURSDAY\",\"FRIDAY\"],\"time\":\"$3:00:00-05:00\"}"
-# this directly runs our patched sfcc-ci
+npx sfcc-ci client:auth -r
+npx sfcc-ci sandbox:update --sandbox $1 --auto-scheduled true --start-scheduler "{\"weekdays\":[\"MONDAY\",\"TUESDAY\",\"WEDNESDAY\",\"THURSDAY\",\"FRIDAY\"],\"time\":\"$2:00:00-05:00\"}" --stop-scheduler "{\"weekdays\":[\"MONDAY\",\"TUESDAY\",\"WEDNESDAY\",\"THURSDAY\",\"FRIDAY\"],\"time\":\"$3:00:00-05:00\"}"
+
+
+
+# use this if you want to directly run our patched sfcc-ci
 # node ../../sfcc-ci/cli.js sandbox:update --sandbox $1 --stop-scheduler '{"weekdays":["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY"],"time":"07:00:00-05:00"}' --stop-scheduler '{"weekdays":["MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY"],"time":"19:00:00-05:00"}'

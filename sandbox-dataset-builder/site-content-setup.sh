@@ -53,7 +53,10 @@ find /home/lwalters/bitbucket.org/lyonsconsultinggroup/acushnet -name "*.isml" -
     # input: staging library.xml, file with list of contentIds to retrieve
     # output: trimmed content library
 
-cat "$SCRIPT_DIR/data/contentIds.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/libraries/$4/library.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-content-library.xslt" > "$TMP_DIR/$dir_name/libraries/$4/library.xml"
+# Clean the source XML first to remove invalid characters
+"$SCRIPT_DIR/clean-xml.sh" "$TMP_DIR/$SOURCE_DIR/libraries/$4/library.xml" "$TMP_DIR/$SOURCE_DIR/libraries/$4/library-clean.xml"
+
+cat "$SCRIPT_DIR/data/contentIds.txt" | xargs -t java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/libraries/$4/library-clean.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-content-library.xslt" > "$TMP_DIR/$dir_name/libraries/$4/library.xml"
 
 # get a map of product urls to product id (titleist hardcodes paths in their content assets, that don't work well in sandboxes)
     # input: master catalog

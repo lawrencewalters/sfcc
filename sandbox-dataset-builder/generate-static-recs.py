@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# limits used when --limit-recs flag is set
+MAX_RECOMMENDATIONS_PER_TYPE = 5
+MAX_UNIQUE_TARGET_IDS = 20
+
 # Parse command line arguments
 parser = argparse.ArgumentParser(
     description='Copy static recommendations from a big catalog to a smaller one given a small set of products',
@@ -14,10 +18,10 @@ parser = argparse.ArgumentParser(
 Examples:
   # Basic usage
   python3 generate-static-recs.py --master-catalog master.xml --catalog-id storefront-id --source-catalog source.xml --output output.xml
-  
+
   # With recommendation limits
   python3 generate-static-recs.py --master-catalog master.xml --catalog-id storefront-id --source-catalog source.xml --output output.xml --limit-recs
-  
+
   # With limits and custom output directory
   python3 generate-static-recs.py --master-catalog master.xml --catalog-id storefront-id --source-catalog source.xml --output output.xml --limit-recs --targets-dir /path/to/output
     '''
@@ -41,7 +45,7 @@ parser.add_argument('--output', '-o',
 
 parser.add_argument('--limit-recs', '-l',
                     action='store_true',
-                    help='Limit recommendations (20 max target IDs, 3 per type)')
+                    help=f'Limit recommendations (20 max target IDs, {MAX_RECOMMENDATIONS_PER_TYPE} per type)')
 
 parser.add_argument('--targets-dir', '-t',
                     help='Directory where recs-targets.txt will be written (defaults to current directory)')
@@ -83,40 +87,57 @@ unique_target_ids = set()
 
 # Iterate through product_ids and find matching recommendations
 for product_id in product_ids:
+    # print(f"{product_id}: finding static recs for product-id {product_id}...")
     # Break early if we have enough unique target IDs
     if limit_recommendations and len(unique_target_ids) >= 20:
         break
-        
+
     recommendations = storefront_catalog_root.findall(f".//ns:recommendation[@source-id='{product_id}']", namespaces=namespace)
-    
+
     if limit_recommendations:
         # Track recommendation types for this product to limit to 3 per type
         type_counts = {}
-        
+
     for recommendation in recommendations:
-        if limit_recommendations:
-            # Check if we've reached the global limit
-            if len(unique_target_ids) >= 20:
-                break
-                
-            # Get recommendation type and limit to 3 per type
-            rec_type = recommendation.get('type', 'unknown')
-            type_counts[rec_type] = type_counts.get(rec_type, 0)
-            if type_counts[rec_type] >= 3:
-                continue
-            type_counts[rec_type] += 1
-        
-        output_root.append(recommendation)
         # Extract and collect unique target-id values
         target_id = recommendation.get('target-id')
         if target_id:
+
+            # skip if there are no category assignments for this recommended product
+            category_assignments = storefront_catalog_root.findall(f".//ns:category-assignment[@product-id='{target_id}']", namespaces=namespace)
+            if len(category_assignments) == 0:
+                # print(f"{product_id}: {target_id}: Skipping recommended target {target_id} because it has no category assignments in the storefront catalog")
+                continue
+            # else:
+                # print(f"{product_id}: {target_id}: found recommended target {target_id} category assignment {category_assignments[0].get('category-id')} in storefront catalog,")
+
+            if limit_recommendations:
+                # Check if we've reached the global limit
+                if len(unique_target_ids) >= MAX_UNIQUE_TARGET_IDS:
+                    print(f"{product_id}: {target_id}: reached {len(unique_target_ids)} unique target IDs, stopping recommendation collection")
+                    break
+
+                # Get recommendation type and limit per type
+                rec_type = recommendation.get('type', 'unknown')
+                type_counts[rec_type] = type_counts.get(rec_type, 0)
+                if type_counts[rec_type] >= MAX_RECOMMENDATIONS_PER_TYPE:
+                    if type_counts.get("4", 0) >= MAX_RECOMMENDATIONS_PER_TYPE and type_counts.get("5", 0) >= MAX_RECOMMENDATIONS_PER_TYPE:
+                        # print(f"{product_id}: {target_id}: reached {MAX_RECOMMENDATIONS_PER_TYPE} recommendations for types 4 and 5, stopping recommendation collection")
+                        break
+                    else:
+                        # print(f"{product_id}: {target_id}: type_counts[{rec_type}] is greater >= {MAX_RECOMMENDATIONS_PER_TYPE}, not adding this target id")
+                        continue
+                type_counts[rec_type] += 1
+                # print(f"{product_id}: {target_id}: type_counts[{rec_type}] is now {type_counts[rec_type]}")
+
+            print(f"{product_id} -> type [{rec_type}] target {target_id} added")
+            output_root.append(recommendation)
             unique_target_ids.add(target_id)
 
 # Write the collected recommendations to a new XML file
 output_tree = ET.ElementTree(output_root)
 output_tree.write(output_file_path, encoding='utf-8', xml_declaration=True)
 
-print(f"Recommendations have been written to {output_file_path}")
 
 # Write unique target-id values to recs-targets file
 if rec_targets_output_dir:
@@ -127,4 +148,4 @@ else:
 with open(rec_targets_file_path, 'w') as f:
     f.write('|'.join(sorted(unique_target_ids)))
 
-print(f"Found {len(unique_target_ids)} unique target-id values written to {rec_targets_file_path}")
+print(f"Club recommendations for {len(unique_target_ids)} shaft/grip products XML written to {output_file_path}, master product ids written to {rec_targets_file_path}")

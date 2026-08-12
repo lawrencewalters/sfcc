@@ -8,7 +8,7 @@ clean_xml_file() {
     # Remove invalid XML characters and character references
     # First remove invalid character references like &#0; through &#31; (except 9, 10, 13)
     # Then remove raw invalid bytes
-    sed -E 's/&#11;?//g' "$input_file" > "$output_file"
+    sed -E 's/&#(11|55|56|57);?//g' "$input_file" > "$output_file"
 }
 
 # Usage: clean_xml_file input.xml cleaned_output.xml

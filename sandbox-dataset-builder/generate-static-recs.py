@@ -101,6 +101,7 @@ for product_id in product_ids:
     for recommendation in recommendations:
         # Extract and collect unique target-id values
         target_id = recommendation.get('target-id')
+        rec_type = recommendation.get('type', 'unknown')
         if target_id:
 
             # skip if there are no category assignments for this recommended product

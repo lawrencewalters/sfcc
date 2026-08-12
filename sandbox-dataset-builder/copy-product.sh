@@ -173,7 +173,7 @@ mkdir "$TMP_DIR/$dir_name/pricebooks"
 master_catalog_file="$TMP_DIR/$SOURCE_DIR/catalogs/$master_catalog_id/catalog.xml"
 require_file "$master_catalog_file" "Master catalog"
 echo -e "\t${CYAN}Clean invalid xml:            ${YELLOW}$master_catalog_file${NC}"
-"$SCRIPT_DIR/remove-xml-snippets.sh" "$master_catalog_file"
+"$SCRIPT_DIR/remove-unneeded-xml-snippets.sh" "$master_catalog_file"
 
 echo -e "\t${CYAN}master products ->            ${YELLOW}$TMP_DIR/$dir_name/catalogs/$master_catalog_id/catalog.xml${GRAY}"
 java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/catalogs/$master_catalog_id/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-master-catalog.xslt" productIds="$product_id"  imageBaseUrl="$image_base_url" > "$TMP_DIR/$dir_name/catalogs/$master_catalog_id/catalog.xml"

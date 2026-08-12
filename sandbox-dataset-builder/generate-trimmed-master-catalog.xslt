@@ -47,7 +47,7 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalo
                 >https://<xsl:value-of select="$imageBaseUrl"/>/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</https-url>
             </external-location>
             <!-- Copy all child elements except internal-location -->
-            <xsl:for-each select="*[name() != 'internal-location']">
+            <xsl:for-each select="*[name() != 'internal-location' and name() != 'external-location']">
                 <xsl:copy-of select="."/>
             </xsl:for-each>
         </image-settings>

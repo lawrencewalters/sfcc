@@ -98,6 +98,14 @@ resolve_site_config() {
             sale_pricebook_id=""
             image_base_url="development-na.titleist.com/dw/image/v2/AAZW_DEV"
             ;;
+        titleist)
+            master_catalog_id="titleist-master"
+            site_catalog_id="titleist-storefront"
+            pricebook_id="usd-titleist-list"
+            currency="USD"
+            sale_pricebook_id="usd-titleist-sale"
+            image_base_url="development-na.titleist.com/dw/image/v2/AAZW_DEV"
+            ;;
         clubglove)
             master_catalog_id="clubglove-master"
             site_catalog_id="clubglove-storefront"

@@ -82,6 +82,14 @@ resolve_site_config() {
             sale_pricebook_id=""
             image_base_url="development-na.footjoy.kr/dw/image/v2/AAZW_DEV"
             ;;
+        titleist-ca)
+            master_catalog_id="titleist-master"
+            site_catalog_id="titleist-storefront-CA"
+            pricebook_id="cad-titleist-list"
+            currency="CAD"
+            sale_pricebook_id="cad-titleist-sale"
+            image_base_url="development-na.titleist.ca/dw/image/v2/AAZW_DEV"
+            ;;
         titleist-clubs-ca)
             master_catalog_id="titleist-clubs-master"
             site_catalog_id="titleist-storefront-CA"

@@ -18,15 +18,15 @@ or
 Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalog.xslt productIds="ABC123|DEF456" > master-catalog-trimmed.xml
 
 -->
-<xsl:stylesheet version="2.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+<xsl:stylesheet version="2.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:dw="http://www.demandware.com/xml/impex/catalog/2006-10-31" exclude-result-prefixes="dw">
     <xsl:output method="xml" indent="yes" omit-xml-declaration="no"/>
     <xsl:param name="productIds"/>
     <xsl:param name="imageBaseUrl"/>
     <xsl:variable name="catalog" select="/dw:catalog"/>
     <xsl:template match="dw:catalog">
-        <catalog 
+        <catalog
             xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" catalog-id="{current()/@catalog-id}">
             <xsl:apply-templates select="dw:header"/>
             <xsl:apply-templates select="dw:product"/>

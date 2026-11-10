@@ -34,13 +34,27 @@ resolve_site_config() {
     local site_id="$1"
 
     case "$site_id" in
+        kjus-uk)
+            master_catalog_id="kjus-master-akeneo"
+            site_catalog_id="kjus-us-storefront"
+            pricebook_id="gbp-kjus-uk-list"
+            currency="GBP"
+            image_base_url="staging-na.kjus.com/dw/image/v2/AAZW_STG"
+            ;;
+        kjus-eu)
+            master_catalog_id="kjus-master-akeneo"
+            site_catalog_id="kjus-us-storefront"
+            pricebook_id="euro-kjus-eu-list"
+            currency="EUR"
+            image_base_url="staging-na.kjus.com/dw/image/v2/AAZW_STG"
+            ;;
         kjus)
             master_catalog_id="kjus-master-akeneo"
             site_catalog_id="kjus-us-storefront"
             pricebook_id="kjus-usd-list-prices"
             currency="USD"
             sale_pricebook_id="kjus-usd-sale-prices"
-            image_base_url="development-na.kjus.com/dw/image/v2/AAZW_DEV"
+            image_base_url="staging-na.kjus.com/dw/image/v2/AAZW_STG"
             ;;
         vokey)
             master_catalog_id="vokey-master"

@@ -39,14 +39,12 @@ resolve_site_config() {
             site_catalog_id="kjus-us-storefront"
             pricebook_id="gbp-kjus-uk-list"
             currency="GBP"
-            image_base_url="staging-na.kjus.com/dw/image/v2/AAZW_STG"
             ;;
         kjus-eu)
             master_catalog_id="kjus-master-akeneo"
             site_catalog_id="kjus-us-storefront"
             pricebook_id="euro-kjus-eu-list"
             currency="EUR"
-            image_base_url="staging-na.kjus.com/dw/image/v2/AAZW_STG"
             ;;
         kjus)
             master_catalog_id="kjus-master-akeneo"
@@ -54,7 +52,6 @@ resolve_site_config() {
             pricebook_id="kjus-usd-list-prices"
             currency="USD"
             sale_pricebook_id="kjus-usd-sale-prices"
-            image_base_url="staging-na.kjus.com/dw/image/v2/AAZW_STG"
             ;;
         vokey)
             master_catalog_id="vokey-master"
@@ -62,7 +59,6 @@ resolve_site_config() {
             pricebook_id="vokey-retail-usd"
             currency="USD"
             sale_pricebook_id=""
-            image_base_url="development-na.vokey.com/dw/image/v2/AAZW_DEV"
             ;;
         links-and-kings)
             master_catalog_id="links-kings-master"
@@ -70,7 +66,6 @@ resolve_site_config() {
             pricebook_id="lnk-usd-list-prices"
             currency="USD"
             sale_pricebook_id=""
-            image_base_url="development-na.linksandkings.com/dw/image/v2/AAZW_DEV"
             ;;
         footjoy)
             master_catalog_id="footjoy-master"
@@ -78,7 +73,6 @@ resolve_site_config() {
             pricebook_id="usd-list-prices"
             currency="USD"
             sale_pricebook_id=""
-            image_base_url="development-na.footjoy.com/dw/image/v2/AAZW_DEV"
             ;;
         footjoy-ca)
             master_catalog_id="footjoy-master"
@@ -86,7 +80,6 @@ resolve_site_config() {
             pricebook_id="cad-list-prices"
             currency="CAD"
             sale_pricebook_id=""
-            image_base_url="development-na.footjoy.ca/dw/image/v2/AAZW_DEV"
             ;;
         footjoy-kr)
             master_catalog_id="footjoy-master"
@@ -94,7 +87,6 @@ resolve_site_config() {
             pricebook_id="krw-list-prices"
             currency="KRW"
             sale_pricebook_id=""
-            image_base_url="development-na.footjoy.kr/dw/image/v2/AAZW_DEV"
             ;;
         titleist-ca)
             master_catalog_id="titleist-master"
@@ -102,7 +94,6 @@ resolve_site_config() {
             pricebook_id="cad-titleist-list"
             currency="CAD"
             sale_pricebook_id="cad-titleist-sale"
-            image_base_url="development-na.titleist.ca/dw/image/v2/AAZW_DEV"
             ;;
         titleist-clubs-ca)
             master_catalog_id="titleist-clubs-master"
@@ -110,7 +101,6 @@ resolve_site_config() {
             pricebook_id="titleist-clubs-prices-CAD"
             currency="CAD"
             sale_pricebook_id=""
-            image_base_url="development-na.titleist.ca/dw/image/v2/AAZW_DEV"
             ;;
         titleist-clubs)
             master_catalog_id="titleist-clubs-master"
@@ -118,7 +108,6 @@ resolve_site_config() {
             pricebook_id="titleist-clubs-prices"
             currency="USD"
             sale_pricebook_id=""
-            image_base_url="development-na.titleist.com/dw/image/v2/AAZW_DEV"
             ;;
         titleist)
             master_catalog_id="titleist-master"
@@ -126,7 +115,6 @@ resolve_site_config() {
             pricebook_id="usd-titleist-list"
             currency="USD"
             sale_pricebook_id="usd-titleist-sale"
-            image_base_url="development-na.titleist.com/dw/image/v2/AAZW_DEV"
             ;;
         clubglove)
             master_catalog_id="clubglove-master"
@@ -134,7 +122,6 @@ resolve_site_config() {
             pricebook_id="clubglove-usd-list-prices"
             currency="USD"
             sale_pricebook_id=""
-            image_base_url="development-na.clubglove.com/dw/image/v2/AAZW_DEV"
             ;;
         *)
             echo -e "\n${RED}Error: Unknown site id '${YELLOW}$site_id${RED}'.${NC}"
@@ -174,7 +161,6 @@ elif [ "$#" -ge 5 ]; then
     pricebook_id="$4"
     currency="$5"
     sale_pricebook_id="$6"
-    image_base_url="development-na.titleist.com/dw/image/v2/AAZW_DEV"
 else
     print_usage
     exit 1
@@ -185,7 +171,7 @@ echo -e "\t${CYAN}site catalog:                 ${YELLOW}$site_catalog_id${NC}"
 echo -e "\t${CYAN}pricebook:                    ${YELLOW}$pricebook_id${NC}"
 echo -e "\t${CYAN}currency:                     ${YELLOW}$currency${NC}"
 echo -e "\t${CYAN}sale pricebook:               ${YELLOW}$sale_pricebook_id${NC}"
-echo -e "\t${CYAN}image base URL:               ${YELLOW}$image_base_url${NC}"
+# echo -e "\t${CYAN}image base URL:               ${YELLOW}$image_base_url${NC}"
 
 # Trim $1 at the first special character (: or |)
 echo -e "\t${CYAN}Processing product IDs:      ${YELLOW} $product_id${NC}"
@@ -206,7 +192,7 @@ echo -e "\t${CYAN}Clean invalid xml:            ${YELLOW}$master_catalog_file${N
 "$SCRIPT_DIR/remove-unneeded-xml-snippets.sh" "$master_catalog_file"
 
 echo -e "\t${CYAN}master products ->            ${YELLOW}$TMP_DIR/$dir_name/catalogs/$master_catalog_id/catalog.xml${GRAY}"
-java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/catalogs/$master_catalog_id/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-master-catalog.xslt" productIds="$product_id"  imageBaseUrl="$image_base_url" > "$TMP_DIR/$dir_name/catalogs/$master_catalog_id/catalog.xml"
+java -jar "$SAXON_JAR" -s:"$TMP_DIR/$SOURCE_DIR/catalogs/$master_catalog_id/catalog.xml" -xsl:"$SCRIPT_DIR/generate-trimmed-master-catalog.xslt" productIds="$product_id" > "$TMP_DIR/$dir_name/catalogs/$master_catalog_id/catalog.xml"
 
 # get all the variations now that we have picked them, this will save time later
 echo -e "\t${CYAN}Extracting variations to      ${YELLOW}$TMP_DIR/$dir_name/variations.txt${GRAY}"

@@ -39,18 +39,21 @@ Transform.exe -s:/path/to/master/catalog.xml -xsl:generate-trimmed-master-catalo
         </header>
     </xsl:template>
     <xsl:template match="dw:image-settings">
+        <xsl:copy-of select="."/>
+        <!-- this block pullls images from staging/dev using the imageBaseUrl param; however this breaks DIS in sandboxes -->
+        <!-- 
         <image-settings xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31">
             <external-location xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31" >
                 <http-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31"
                 >http://<xsl:value-of select="$imageBaseUrl"/>/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</http-url>
                 <https-url xmlns="http://www.demandware.com/xml/impex/catalog/2006-10-31"
                 >https://<xsl:value-of select="$imageBaseUrl"/>/on/demandware.static/-/Sites-<xsl:value-of select="$catalog/@catalog-id"/>/default/</https-url>
-            </external-location>
+            </external-location> -->
             <!-- Copy all child elements except internal-location -->
-            <xsl:for-each select="*[name() != 'internal-location' and name() != 'external-location']">
+            <!-- <xsl:for-each select="*[name() != 'internal-location' and name() != 'external-location']">
                 <xsl:copy-of select="."/>
             </xsl:for-each>
-        </image-settings>
+        </image-settings>   -->
     </xsl:template>
 
     <xsl:template match="dw:product"/>

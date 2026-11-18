@@ -54,3 +54,10 @@ while IFS= read -r line; do
         fi
     fi
 done < <(git for-each-ref --sort=committerdate refs/remotes/ --format='%(committerdate:iso8601)	%(refname:short)	%(subject)')
+
+
+echo ""
+echo "Special branches that need review have been written to branch_special_branches_review.txt"
+echo ""
+echo "Branch delete commands have been written to branch_delete_commands.txt"
+echo "run it with bash branch_delete_commands.txt"
